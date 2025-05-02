@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -38,6 +40,12 @@ func CheckErr(e error) {
 	}
 }
 
+func usage() {
+	fmt.Println("datecalc, Version " + Version + ", written with .ʕ◔ϖ◔ʔ")
+	fmt.Println("use -h for help.")
+	os.Exit(1)
+}
+
 func addSubtr(theDate string, day int, month int, year int) string {
 	format := "20060102"
 	d, err := time.Parse(format, theDate)
@@ -54,10 +62,27 @@ func addSubtr(theDate string, day int, month int, year int) string {
 }
 
 func main() {
-	log.Println("datecalc, Version " + Version)
-	YYYYMMDD := os.Args[1:]
-	log.Println("calculating with " + YYYYMMDD[0])
 
-	log.Println(addSubtr(YYYYMMDD[0], 1, 0, 1))
+	if len(os.Args) == 1 {
+		usage()
+	}
 
+	now := time.Now()
+	format := "20060102"
+	today := now.Format(format)
+	yyyymmdd := flag.String("v", today, "Given date in format yyyymmdd")
+	dayFlag := flag.Int("d", 0, "Calculate +/-days.")
+	monthFlag := flag.Int("m", 0, "Calculate +/-months.")
+	yearFlag := flag.Int("y", 0, "Calculate +/-years.")
+	flag.Parse()
+
+	if *dayFlag != 0 {
+		fmt.Println(addSubtr(*yyyymmdd, *dayFlag, 0, 0))
+	} else if *monthFlag != 0 {
+		fmt.Println(addSubtr(*yyyymmdd, 0, *monthFlag, 0))
+	} else if *yearFlag != 0 {
+		fmt.Println(addSubtr(*yyyymmdd, 0, 0, *yearFlag))
+	} else {
+		fmt.Println(*yyyymmdd)
+	}
 }
