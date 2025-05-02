@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -67,22 +68,27 @@ func main() {
 		usage()
 	}
 
-	now := time.Now()
-	format := "20060102"
-	today := now.Format(format)
-	yyyymmdd := flag.String("v", today, "Given date in format yyyymmdd")
+	yyyymmdd := flag.String("v", "n/a", "Given date in format yyyymmdd")
 	dayFlag := flag.Int("d", 0, "Calculate +/-days.")
 	monthFlag := flag.Int("m", 0, "Calculate +/-months.")
 	yearFlag := flag.Int("y", 0, "Calculate +/-years.")
+	weekFlag := flag.Bool("w", false, "Get weeknumber of given date.")
 	flag.Parse()
 
-	if *dayFlag != 0 {
+	switch {
+	case *weekFlag:
+		format := "20060102"
+		isoweek, err := time.Parse(format, *yyyymmdd)
+		CheckErr(err)
+		_, w := isoweek.ISOWeek()
+		fmt.Println("Week:" + strconv.Itoa(w))
+	case *dayFlag != 0:
 		fmt.Println(addSubtr(*yyyymmdd, *dayFlag, 0, 0))
-	} else if *monthFlag != 0 {
+	case *monthFlag != 0:
 		fmt.Println(addSubtr(*yyyymmdd, 0, *monthFlag, 0))
-	} else if *yearFlag != 0 {
+	case *yearFlag != 0:
 		fmt.Println(addSubtr(*yyyymmdd, 0, 0, *yearFlag))
-	} else {
+	default:
 		fmt.Println(*yyyymmdd)
 	}
 }
