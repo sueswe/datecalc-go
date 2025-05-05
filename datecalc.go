@@ -10,31 +10,8 @@ import (
 	"time"
 )
 
-/*
-Usage: datecalc.pl DATE [ -d nn ] | [ -m nn] | [ -y nn] [ --cDIM] [ --week]
-
-where:
- DATE 	 Date to calc from (format YYYYMMDD)
- -d 	 Day to calc (+/-)
- -m 	 Month to calc (+/-)
- -y 	 Year to calc (+/-)
- -c 	 Calculates days in given month
- -w 	 Returns Week of year
- -e 	 Returns days since 1900/1/1
- -nth 3 -tdw 5 	 Return  3th friday (5) from given date (Year Month)
-
- Examples:
- ./datecalc.pl 20210131 -nth 3 -tdw 5
- ./datecalc.pl 20090504 -d -40 	 subtract 40 days
- ./datecalc.pl 20090506 -m 2 	 summate 2 month
- ./datecalc.pl 20090506 -y 1 	 summate 1 year
- ./datecalc.pl 20120205 --cDIM 	 Calculates days for february 2012
- ./datecalc.pl 20111217 -w 	 Returns number of week for given date
- ./datecalc.pl -e 20130419 	 Returns days since 1900/1/1
-
-*/
-
-var Version string = "0.1"
+var Version string = "0.3"
+var REV string = "DEV"
 
 func CheckErr(e error) {
 	if e != nil {
@@ -44,8 +21,21 @@ func CheckErr(e error) {
 
 func usage() {
 	fmt.Println("datecalc, Version " + Version + ", written with .ʕ◔ϖ◔ʔ")
+	fmt.Println("Commit: " + REV)
 	fmt.Println("use -h for help.")
 	os.Exit(1)
+}
+
+// https://stackoverflow.com/questions/73880828/list-the-number-of-days-in-current-date-month
+func daysInMonth(t time.Time) int {
+	t = time.Date(t.Year(), t.Month(), 32, 0, 0, 0, 0, time.UTC)
+	daysInMonth := 32 - t.Day()
+	days := make([]int, daysInMonth)
+	for i := range days {
+		days[i] = i + 1
+	}
+	tage := days[len(days)-1]
+	return tage
 }
 
 func addSubtr(theDate string, day int, month int, year int) string {
@@ -116,16 +106,23 @@ func main() {
 		usage()
 	}
 
-	yyyymmdd := flag.String("v", "n/a", "Given date in format yyyymmdd")
-	dayFlag := flag.Int("d", 0, "Calculate +/-days.")
-	monthFlag := flag.Int("m", 0, "Calculate +/-months.")
-	yearFlag := flag.Int("y", 0, "Calculate +/-years.")
-	weekFlag := flag.Bool("w", false, "Get weeknumber of given date.")
-	nthFlag := flag.Int("nth", 1, "Nth hit of weekday")
-	tFlag := flag.String("dow", "none", "Day of Week")
+	yyyymmdd := flag.String("v", "n/a", "Parameter. Given date in format yyyymmdd")
+	dayFlag := flag.Int("d", 0, "Parameter. Calculates +/-days.")
+	monthFlag := flag.Int("m", 0, "Parameter. Calculates +/-months.")
+	yearFlag := flag.Int("y", 0, "Parameter. Calculates +/-years.")
+	weekFlag := flag.Bool("w", false, "Bool. Returns weeknumber of given date.")
+	nthFlag := flag.Int("nth", 1, "Parameter. Nth occurance of weekday.")
+	tFlag := flag.String("dow", "none", "Parameter. Day of Week")
+	cFlag := flag.Bool("c", false, "Bool. Returns number of days in month.")
 	flag.Parse()
 
 	switch {
+	case *cFlag:
+		format := "20060102"
+		c, e := time.Parse(format, *yyyymmdd)
+		CheckErr(e)
+		mnum := daysInMonth(c)
+		fmt.Println(mnum)
 	case *tFlag != "none":
 		//is :=
 		nth_dow_of_month(*yyyymmdd, *nthFlag, *tFlag) // 1,0 = first,sunday
