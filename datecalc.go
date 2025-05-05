@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -62,6 +63,53 @@ func addSubtr(theDate string, day int, month int, year int) string {
 	return erg
 }
 
+// Calculating nth DOW of a Month
+// 1,0 = first,sunday
+func nth_dow_of_month(theDate string, nth int, weekday string) {
+	format := "20060102"
+	yymm01 := strings.Split(theDate, "")
+	f := strings.Join(yymm01[0:6], "")
+	first := f + "01"
+	// fmt.Println("Startdate: " + first)
+	// timeObject:
+	given, err := time.Parse(format, first)
+	CheckErr(err)
+
+	for i := 0; i < 7; i++ {
+		given_dow := given.Weekday().String()
+		// fmt.Println("debug: given is: " + given_dow)
+		if given_dow != weekday {
+			given = given.AddDate(0, 0, 1)
+		} else {
+			// fmt.Println("Identisch " + given_dow)
+			// fmt.Println("Sind nun bei: " + given.Format(time.DateOnly))
+			break
+		}
+
+	}
+	if nth > 5 {
+		fmt.Println("Not allowed. Nth has to be between 1 and 5.")
+		os.Exit(2)
+	}
+	switch {
+	case nth == 1:
+		fmt.Println(given.Format(time.DateOnly))
+	case nth == 2:
+		g2 := given.AddDate(0, 0, 7)
+		fmt.Println(g2.Format(time.DateOnly))
+	case nth == 3:
+		g3 := given.AddDate(0, 0, 14)
+		fmt.Println(g3.Format(time.DateOnly))
+	case nth == 4:
+		g4 := given.AddDate(0, 0, 21)
+		fmt.Println(g4.Format(time.DateOnly))
+	case nth == 5:
+		g5 := given.AddDate(0, 0, 28)
+		fmt.Println(g5.Format(time.DateOnly))
+	}
+
+}
+
 func main() {
 
 	if len(os.Args) == 1 {
@@ -73,9 +121,15 @@ func main() {
 	monthFlag := flag.Int("m", 0, "Calculate +/-months.")
 	yearFlag := flag.Int("y", 0, "Calculate +/-years.")
 	weekFlag := flag.Bool("w", false, "Get weeknumber of given date.")
+	nthFlag := flag.Int("nth", 1, "Nth hit of weekday")
+	tFlag := flag.String("dow", "none", "Day of Week")
 	flag.Parse()
 
 	switch {
+	case *tFlag != "none":
+		//is :=
+		nth_dow_of_month(*yyyymmdd, *nthFlag, *tFlag) // 1,0 = first,sunday
+		//fmt.Println(is)
 	case *weekFlag:
 		format := "20060102"
 		isoweek, err := time.Parse(format, *yyyymmdd)
