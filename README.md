@@ -1,14 +1,12 @@
-# datecalc-go
+# datecalc, written in go
 
 ## Synopsis
 
-
-datecalc -v YYYYMMDD [-d|-m|-y +/-int] [-w] [-nth int -dow Weekday]
+`datecalc -v YYYYMMDD [-d|-m|-y +/-int] [-w] [-nth int -dow Weekday]`
 
 where 'Weekday' hast to be one of the following:
 
 ~~~
-const (
 	Sunday
 	Monday
 	Tuesday
@@ -16,25 +14,25 @@ const (
 	Thursday
 	Friday
 	Saturday
-)
 ~~~
 
 ## Usage
 
 ~~~
--d int
-    	Calculate +/-days.
--dow string
-    Day of Week (default "none")
--m int
-    Calculate +/-months.
--nth int
-    Nth hit of weekday (default 1)
--v string
-    Given date in format yyyymmdd (default "n/a")
--w	Get weeknumber of given date.
--y int
-    Calculate +/-years.
+  -c	Bool. Returns number of days in month.
+  -d int
+    	Parameter. Calculates +/-days.
+  -dow string
+    	Parameter. Day of Week (default "none")
+  -m int
+    	Parameter. Calculates +/-months.
+  -nth int
+    	Parameter. Nth occurance of weekday. (default 1)
+  -v string
+    	Parameter. Given date in format yyyymmdd (default "n/a")
+  -w	Bool. Returns weeknumber of given date.
+  -y int
+    	Parameter. Calculates +/-years.
 ~~~
 
 ## Add or subtract days, month or years to a date
@@ -61,4 +59,9 @@ datecalc -v 20250601 -nth 2 -dow Monday
 
 Calculated the 2nd Monday of the given month. Given date will always start with 01 while calculating.
 
- 
+
+## Return number of days of given date
+
+~~~
+datecalc -v 20250624 -c
+~~~
