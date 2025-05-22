@@ -45,7 +45,7 @@ lgkk,testta2
 for UMG in ${stages}
 do
     cd /tmp/ || exit 1
-    "$HOME"/bin/vicecersa.sh "${UMG}" datecalc \$HOME/bin/ datecalc || {
+    "$HOME"/bin/vicecersa.sh "${UMG}" datecalc.aix \$HOME/bin/ datecalc || {
         echo "Status: $?"
         exit 2
     }
