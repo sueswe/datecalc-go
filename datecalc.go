@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var Version string = "0.3"
+var Version string = "0.3.1"
 var REV string = "DEV"
 
 func CheckErr(e error) {
@@ -20,7 +20,7 @@ func CheckErr(e error) {
 }
 
 func usage() {
-	fmt.Println("datecalc, Version " + Version + ", written with .ʕ◔ϖ◔ʔ")
+	fmt.Println("datecalc, Version " + Version + ", written Go")
 	fmt.Println("Commit: " + REV)
 	fmt.Println("use -h for help.")
 	os.Exit(1)
@@ -46,7 +46,7 @@ func addSubtr(theDate string, day int, month int, year int) string {
 	targetDate := d.AddDate(year, month, day)
 	result := targetDate.Format(time.DateOnly)
 
-	dow := d.Weekday()
+	dow := targetDate.Weekday()
 	//dow_num := int(dow)
 
 	erg := dow.String() + "," + result
