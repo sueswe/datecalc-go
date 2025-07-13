@@ -1,5 +1,7 @@
 # datecalc, written in go
 
+![build workflow](https://github.com/sueswe/datecalc-go/actions/workflows/go.yml/badge.svg?event=push)
+
 ## Synopsis
 
 `datecalc -v YYYYMMDD [-d|-m|-y +/-int] [-w] [-nth int -dow Weekday]`
