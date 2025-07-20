@@ -6,7 +6,7 @@
 
 `datecalc -v YYYYMMDD [-d|-m|-y +/-int] [-w] [-nth int -dow Weekday]`
 
-where 'Weekday' hast to be one of the following:
+where 'Weekday' has to be one of the following:
 
 ~~~
 	Sunday
@@ -67,3 +67,4 @@ Calculated the 2nd Monday of the given month. Given date will always start with 
 ~~~
 datecalc -v 20250624 -c
 ~~~
+
