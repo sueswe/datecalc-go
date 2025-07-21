@@ -17,12 +17,7 @@ echo "------------------------------------"
 echo '
 ### LINUX #########################################################
 '
-
-stages="
-stp,testta3
-lgkk,testta3
-"
-
+stages="stp,testta3 lgkk,testta3 stp,prodta3 lgkk,prodta3 hema,test,01T hema,prod"
 for UMG in ${stages}
 do
     cd /tmp/ || exit 1
@@ -37,11 +32,7 @@ echo '
 ### AIX #########################################################
 '
 
-stages="
-stp,testta2
-lgkk,testta2
-"
-
+stages="stp,testta2 stp,prodta2 pfif"
 for UMG in ${stages}
 do
     cd /tmp/ || exit 1
