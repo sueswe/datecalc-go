@@ -2,7 +2,9 @@
 
 source ~/.profile
 
-cd "$HOME"/compile/datecalc-go || {
+name='datecalc'
+
+cd "$HOME"/compile/${name}-go || {
     echo "Status: $?"
     exit 4
 }
@@ -12,32 +14,32 @@ env | grep PATH
 env | grep LOADED
 echo "------------------------------------"
 
+masterrtc=0
 
-
-echo '
-### LINUX #########################################################
-'
+echo '### LINUX #########################################################'
 stages="stp,testta3 lgkk,testta3 stp,prodta3 lgkk,prodta3 hema,test,01T hema,prod"
 for UMG in ${stages}
 do
     cd /tmp/ || exit 1
-    "$HOME"/bin/vicecersa.sh "${UMG}" datecalc \$HOME/bin/ || {
+    remotecommander.rb -d "\$HOME/bin/" -s "${name}" -g ${UMG} || {
         echo "Status: $?"
-        exit 2
+        masterrtc=2
     }
 done
+rm -v /tmp/${name}
 
 
-echo '
-### AIX #########################################################
-'
-
+echo '### AIX #########################################################'
 stages="stp,testta2 stp,prodta2 pfif"
+cd /tmp/ || exit 1
+cp ${name}.aix ${name}
 for UMG in ${stages}
 do
-    cd /tmp/ || exit 1
-    "$HOME"/bin/vicecersa.sh "${UMG}" datecalc.aix \$HOME/bin/ datecalc || {
+    remotecommander.rb -d "\$HOME/bin/" -s "${name}" -g ${UMG}  || {
         echo "Status: $?"
-        exit 2
+        masterrtc=2
     }
 done
+
+rm -v /tmp/${name}*
+exit ${masterrtc}
