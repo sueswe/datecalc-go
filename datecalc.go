@@ -23,6 +23,39 @@ func usage() {
 	fmt.Println("datecalc, Version " + Version + ", written Go")
 	fmt.Println("Commit: " + REV)
 	fmt.Println("use -h for help.")
+	fmt.Println(`
+	
+	## Add or subtract days, month or years to a date
+
+	~~~
+	datecalc -v 20250529 -d +1
+	datecalc -v 20250202 -m 1
+	datecalc -v 20241231 -y -1
+	~~~
+
+	## Number of week of given date
+
+	~~~
+	datecalc -v 20250314 -w
+	~~~
+
+	## nth weekday of a Month
+
+	* Example:
+
+	~~~
+	datecalc -v 20250601 -nth 2 -dow Monday
+	~~~
+
+	Calculated the 2nd Monday of the given month. Given date will always start with 01 while calculating.
+
+
+	## Return number of days of given date
+
+	~~~
+	datecalc -v 20250624 -c
+	~~~
+	`)
 	os.Exit(1)
 }
 
