@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var Version string = "0.3.1"
+var Version string = "0.3.2"
 var REV string = "DEV"
 
 func CheckErr(e error) {
@@ -55,7 +55,7 @@ func addSubtr(theDate string, day int, month int, year int) string {
 
 // Calculating nth DOW of a Month
 // 1,0 = first,sunday
-func nth_dow_of_month(theDate string, nth int, weekday string) {
+func nth_dow_of_month(theDate string, nth int, weekday string) string {
 	format := "20060102"
 	yymm01 := strings.Split(theDate, "")
 	f := strings.Join(yymm01[0:6], "")
@@ -81,22 +81,30 @@ func nth_dow_of_month(theDate string, nth int, weekday string) {
 		fmt.Println("Not allowed. Nth has to be between 1 and 5.")
 		os.Exit(2)
 	}
+	result := "none"
+
 	switch {
 	case nth == 1:
-		fmt.Println(given.Format(time.DateOnly))
+		//fmt.Println(given.Format(time.DateOnly))
+		result = given.Format(time.DateOnly)
 	case nth == 2:
 		g2 := given.AddDate(0, 0, 7)
-		fmt.Println(g2.Format(time.DateOnly))
+		//fmt.Println(g2.Format(time.DateOnly))
+		result = g2.Format(time.DateOnly)
 	case nth == 3:
 		g3 := given.AddDate(0, 0, 14)
-		fmt.Println(g3.Format(time.DateOnly))
+		//fmt.Println(g3.Format(time.DateOnly))
+		result = g3.Format(time.DateOnly)
 	case nth == 4:
 		g4 := given.AddDate(0, 0, 21)
-		fmt.Println(g4.Format(time.DateOnly))
+		//fmt.Println(g4.Format(time.DateOnly))
+		result = g4.Format(time.DateOnly)
 	case nth == 5:
 		g5 := given.AddDate(0, 0, 28)
-		fmt.Println(g5.Format(time.DateOnly))
+		//fmt.Println(g5.Format(time.DateOnly))
+		result = g5.Format(time.DateOnly)
 	}
+	return result
 
 }
 
@@ -125,8 +133,8 @@ func main() {
 		fmt.Println(mnum)
 	case *tFlag != "none":
 		//is :=
-		nth_dow_of_month(*yyyymmdd, *nthFlag, *tFlag) // 1,0 = first,sunday
-		//fmt.Println(is)
+		is := nth_dow_of_month(*yyyymmdd, *nthFlag, *tFlag) // 1,0 = first,sunday
+		fmt.Println(is)
 	case *weekFlag:
 		format := "20060102"
 		isoweek, err := time.Parse(format, *yyyymmdd)
