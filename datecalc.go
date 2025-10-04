@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var Version string = "0.3.2"
+var Version string = "0.3.3"
 var REV string = "DEV"
 
 func CheckErr(e error) {
@@ -20,7 +20,7 @@ func CheckErr(e error) {
 }
 
 func usage() {
-	fmt.Println("datecalc, Version " + Version + ", written Go")
+	fmt.Println("datecalc, Version " + Version)
 	fmt.Println("Commit: " + REV)
 	fmt.Println("use -h for help.")
 	fmt.Println(`
@@ -116,23 +116,23 @@ func nth_dow_of_month(theDate string, nth int, weekday string) string {
 	}
 	result := "none"
 
-	switch {
-	case nth == 1:
+	switch nth {
+	case 1:
 		//fmt.Println(given.Format(time.DateOnly))
 		result = given.Format(time.DateOnly)
-	case nth == 2:
+	case 2:
 		g2 := given.AddDate(0, 0, 7)
 		//fmt.Println(g2.Format(time.DateOnly))
 		result = g2.Format(time.DateOnly)
-	case nth == 3:
+	case 3:
 		g3 := given.AddDate(0, 0, 14)
 		//fmt.Println(g3.Format(time.DateOnly))
 		result = g3.Format(time.DateOnly)
-	case nth == 4:
+	case 4:
 		g4 := given.AddDate(0, 0, 21)
 		//fmt.Println(g4.Format(time.DateOnly))
 		result = g4.Format(time.DateOnly)
-	case nth == 5:
+	case 5:
 		g5 := given.AddDate(0, 0, 28)
 		//fmt.Println(g5.Format(time.DateOnly))
 		result = g5.Format(time.DateOnly)
@@ -181,6 +181,8 @@ func main() {
 	case *yearFlag != 0:
 		fmt.Println(addSubtr(*yyyymmdd, 0, 0, *yearFlag))
 	default:
-		fmt.Println(*yyyymmdd)
+		//fmt.Println(*yyyymmdd)
+		fmt.Println("Missing parameter.")
+		os.Exit(1)
 	}
 }
